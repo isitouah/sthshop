@@ -1,84 +1,85 @@
 import styled from "styled-components";
 import { mobile } from "../responsive";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { useAddUser} from "../dataUsers";
+import { useAddUser } from "../dataUsers";
+import { saveUser } from "../Users";
 
 
 
 
-const  Register = () => {
+const Register = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-  const [doit,setDoit] = useState(false)
+  const [doit, setDoit] = useState(false)
   const [payload, setPayload] = useState(null)
 
-  const { user, isAdded, addError } = useAddUser(doit,payload);
+  const { user, isAdded, addError } = useAddUser(doit, payload);
 
   const navigate = useNavigate();
 
 
-    function register(e){
-      e.preventDefault();
-    
+  function register(e) {
+    e.preventDefault();
+
     if (!password || !userName) {
-       return alert('User name and password required')
+      return alert('User name and password required')
     }
 
     if (password === confirmedPassword) {
-     // addUser(user);
-    saveUser(user)
-     // navigate("/login");
-     
-     const pers = {
-      userName,
-      email,
-      password,
-    }
+      // addUser(user);
+      saveUser(user)
+      navigate("/login");
 
-    setPayload(pers)
-    setDoit(true) 
-     
+      const pers = {
+        userName,
+        email,
+        password,
+      }
+
+      setPayload(pers)
+      setDoit(true)
+
     } else {
       setIsPasswordHidden(false);
       setConfirmedPassword("password does not match");
     }
 
-  };   
-  
+  };
+
   return (
 
-    <Container>      
+    <Container>
       <Wrapper>
         <Title>CREATE AN ACCOUNT</Title>
-        {addError && <div><p style={{color: "red"}}>{addError}</p></div>}
-        {isAdded && navigate("/login")}        
-        <Form onSubmit= {register}>          
-          <Input placeholder="username" value={userName} onChange={(e) => setUserName(e.target.value)}/>
-          <Input placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
+        {addError && <div><p style={{ color: "red" }}>{addError}</p></div>}
+        {isAdded && navigate("/login")}
+        <Form onSubmit={register}>
+          <Input placeholder="username" value={userName} onChange={(e) => setUserName(e.target.value)} />
+          <Input placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
           <Inputpass placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
           <Inputpass placeholder="confirm password"
-          value={confirmedPassword}
-          onChange={(e) => {
-            if (!isPasswordHidden) {
-              setIsPasswordHidden(true);
-            }
-            setConfirmedPassword(e.target.value);
-          }}
-          type={isPasswordHidden ? "password" : "text"}
+            value={confirmedPassword}
+            onChange={(e) => {
+              if (!isPasswordHidden) {
+                setIsPasswordHidden(true);
+              }
+              setConfirmedPassword(e.target.value);
+            }}
+            type={isPasswordHidden ? "password" : "text"}
           />
           <Agreement>
             By creating an account, I consent to the processing of my personal
             data in accordance with the <b>PRIVACY POLICY</b>
           </Agreement>
-          <Button type="submit" onClick={()=> setDoit(false)}>CREATE</Button>
-        </Form>                
+          <Button type="submit" onClick={() => setDoit(false)}>CREATE</Button>
+        </Form>
       </Wrapper>
     </Container>
-  
+
   );
 };
 
