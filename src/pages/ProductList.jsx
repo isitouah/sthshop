@@ -16,7 +16,7 @@ const ProductList = () => {
 
   useEffect(() => {
 
-    const url = 'https://dataprod.herokuapp.com/dataprod';
+    const url = 'https://dataprod.azurewebsites.net/dataprod';
 
     var myHeaders = new Headers();
     myHeaders.append("API-Key", "9c3c751c-555f-4ac6-92a2-934a51e78a4b");
